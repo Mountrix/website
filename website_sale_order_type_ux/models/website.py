@@ -22,4 +22,20 @@ class Website(models.Model):
             if sale_type.warehouse_id:
                 res['warehouse_id'] = sale_type.warehouse_id.id
                 res['company_id'] = sale_type.warehouse_id.company_id.id
+        
+        # Ensure warehouse_id is always set, even if sale_type doesn't have one
+        if not res.get('warehouse_id'):
+            # Try to get warehouse from website's _get_warehouse_available method
+            warehouse_id = self.sudo()._get_warehouse_available()
+            if warehouse_id:
+                res['warehouse_id'] = warehouse_id
+            else:
+                # Fallback: get first warehouse for the company
+                company_id = res.get('company_id') or self.env.company.id
+                warehouse = self.env['stock.warehouse'].sudo().search(
+                    [('company_id', '=', company_id)], limit=1
+                )
+                if warehouse:
+                    res['warehouse_id'] = warehouse.id
+        
         return res
