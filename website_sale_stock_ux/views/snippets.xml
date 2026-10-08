@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- The shop editor lists this view on its own: out_of_stock_ribbon
+         has customize_show="True". Odoo 19 dropped website_sale.snippet_options. -->
+</odoo>

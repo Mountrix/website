@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="out_of_stock_ribbon" inherit_id="website_sale.products_item" name="Out of stock Ribbon" active="False" customize_show="True">
+        <xpath expr="//a[hasclass('oe_product_image_link')]" position="inside">
+            <span t-if="product._is_sold_out() and not product.allow_out_of_stock_order" class="o_ribbons o_not_editable out_of_stock_ribbon" style="color: var(--o-color-4); background-color:rgb(255, 0, 0)">Out of stock</span>
+        </xpath>
+        <xpath expr="//form[contains(@t-attf-class, 'oe_product_cart')]" position="attributes">
+            <attribute name="t-attf-class">oe_product_cart h-100 d-flex {{ptavs_classes}} #{'out_of_stock_img_blur' if (product._is_sold_out() and not product.allow_out_of_stock_order) else ''}</attribute>
+        </xpath>
+    </template>
+</odoo>
